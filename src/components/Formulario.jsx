@@ -19,7 +19,7 @@ const Formulario = ({ setDataState, dataToShow, setDataToShow }) => {
       <table>
         <thead>
           <tr>
-            <th>N° de Pedido</th>
+            <th>N° de Pedidosssssss</th>
             <th>Fecha</th>
             <th>Concepto</th>
             <th>Importe</th>
