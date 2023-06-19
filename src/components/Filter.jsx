@@ -1,12 +1,6 @@
 import { InputLabel, FormControl, Select, MenuItem } from "@mui/material"
 
 const Filter = ({ handleChangeFilter, filterValue }) => {
-  const Filtrar = [
-    { value: "Fecha" },
-    { value: "Ingreso" },
-    { value: "Retirada" },
-  ]
-
   return (
     <>
       <form>
@@ -16,7 +10,7 @@ const Filter = ({ handleChangeFilter, filterValue }) => {
             label="Filtrar"
             onChange={handleChangeFilter}
             value={filterValue}
-            sx={{ width: 130, fontWeight: "bold", variant: "contained" }}
+            sx={{ width: 130, variant: "contained" }}
           >
             <MenuItem value="">
               <em> - </em>

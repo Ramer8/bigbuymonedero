@@ -8,62 +8,54 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import Filter from "./components/Filter"
-import SearchDate from "./components/SearchDate"
+import SearchBar from "./components/SearchBar"
+import FilterByDate from "./components/FilterByDate"
 
 function App() {
   const [dataState, setDataState] = useState([])
   const [dataToShow, setDataToShow] = useState([])
+  const [dataShow, setDataShow] = useState([])
   const [filterValue, setFilterValue] = useState("")
-  const [modal, setModal] = useState(false)
-  const [rangeDate, setRangeDate] = useState(false)
+  const [toggleDate, setToggleDate] = useState(false)
 
-  const [upperDate, setUpperDate] = useState("")
-  const [lowerDate, setLowerDate] = useState("")
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     if (filterValue === "Ingreso") {
       const newState = dataState.filter((e) => e.concept === 0)
-      console.log(newState)
       setDataToShow(newState)
-      setModal(false)
+      setToggleDate(false)
     } else if (filterValue === "Retirada") {
       const newState = dataState.filter((e) => e.concept === 1)
-      console.log(newState)
       setDataToShow(newState)
-      setModal(false)
+      setToggleDate(false)
     } else if (filterValue === "Fecha") {
-      // const newState = dataState.filter((e) => e.fecha === rangeDate)
-      setModal(true)
-      console.log("fecha")
+      setToggleDate(true)
+      setDataToShow(dataState)
     } else {
       setDataToShow(dataState)
-      setModal(false)
+      setToggleDate(false)
     }
   }, [filterValue, dataState])
 
   useEffect(() => {
-    console.log("object")
-  }, [rangeDate])
+    const obtenerLS = () => {
+      const dataStateLS = JSON.parse(localStorage.getItem("dataState")) ?? []
+      setDataState(dataStateLS)
+    }
+    obtenerLS()
+  }, [])
 
-  // useEffect(() => {
-  //   const obtenerLS = () => {
-  //     const dataStateLS = JSON.parse(localStorage.getItem('dataState')) ?? [];
-  //     setDataState(dataStateLS)
-  //   }
-  //   obtenerLS();
-  // }, []);
+  useEffect(() => {
+    localStorage.setItem("dataState", JSON.stringify(dataState))
+  }, [dataState])
 
-  // useEffect(() => {
-  //   localStorage.setItem('dataState', JSON.stringify(dataState));
-  // }, [dataState])
+  useEffect(() => {
+    setPage(1)
+  }, [filterValue])
 
   const handleChangeFilter = (e) => {
     setFilterValue(e.target.value)
-    console.log(filterValue)
-  }
-  const handleDate = () => {
-    setRangeDate(true)
-    console.log({ upperDate, lowerDate })
   }
 
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
@@ -76,43 +68,50 @@ function App() {
       }),
     [prefersDarkMode]
   )
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container>
-        <Header />
-        <Typography
-          component="h1"
-          variant="h6"
-          align="left"
-          marginY={1}
-          sx={{
-            fontWeight: "bold",
-          }}
-        >
-          Barra de busqueda
-        </Typography>
+        <Header
+          dataState={dataState}
+          dataToShow={dataToShow}
+          setDataToShow={setDataToShow}
+          setDataState={setDataState}
+        />
+        <SearchBar
+          filterValue={filterValue}
+          setDataToShow={setDataToShow}
+          dataState={dataState}
+          setPage={setPage}
+        />
+        <span> - </span>
         <Filter
           handleChangeFilter={handleChangeFilter}
           filterValue={filterValue}
         />
-        {/* {modal && <Modal modal={modal} />} */}
-        {modal && (
-          <SearchDate
-            handleDate={handleDate}
-            dataToShow={dataToShow}
-            lowerDate={lowerDate}
-            setLowerDate={setLowerDate}
-            upperDate={upperDate}
-            setUpperDate={setUpperDate}
-          />
+        <span> - </span>
+        {toggleDate && (
+          <>
+            <FilterByDate
+              dataState={dataState}
+              setDataToShow={setDataToShow}
+              dataToShow={dataToShow}
+            />
+          </>
         )}
-        <Formulario
-          setDataState={setDataState}
-          dataToShow={dataToShow}
-          setDataToShow={setDataToShow}
-        />
+        <Typography component="h2" variant="h6">
+          <Formulario
+            filterValue={filterValue}
+            page={page}
+            setPage={setPage}
+            dataState={dataState}
+            setDataState={setDataState}
+            dataToShow={dataToShow}
+            setDataToShow={setDataToShow}
+            dataShow={dataShow}
+            setDataShow={setDataShow}
+          />
+        </Typography>
       </Container>
     </ThemeProvider>
   )

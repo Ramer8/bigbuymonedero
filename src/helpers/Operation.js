@@ -3,18 +3,27 @@ export const orderDateJson = (objects, Total) => {
     ...elem,
     date: new Date(elem.date),
   }))
+  // los convierto a fecha formato new Date para ordenarlos
 
   const orderedJson = newDateJson.sort((a, b) => a.date - b.date)
   let mainTotal = Total
+  let saldoAnterior = ""
   const operation = [(a, b) => a + b, (a, b) => a - b]
 
   const newJson = orderedJson.map((elem) => {
     mainTotal = operation[elem.concept](mainTotal, elem.amount)
-    return { ...elem, saldoPosterior: mainTotal }
-  })
 
-  return newJson.sort((a, b) => b.date - a.date)
-  //oredenado nuevamente de reciente a viejo
+    elem.concept && (saldoAnterior = mainTotal + elem.amount)
+    !elem.concept && (saldoAnterior = mainTotal - elem.amount)
+
+    return { ...elem, saldoPosterior: mainTotal, saldoAnterior: saldoAnterior }
+  })
+  const orderedJson2 = newJson.sort((a, b) => b.date - a.date)
+  const newDateJson3 = orderedJson2.map((elem) => ({
+    ...elem,
+    date: elem.date.toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2"),
+  }))
+  return newDateJson3
 }
 
 // Funcion para formatear numero a euro
@@ -25,29 +34,3 @@ export const formatMoney = (money) => {
   })
   return euro
 }
-
-// export const searchDate = (dataState) => {}
-
-// export const formatInitialJson = (oldJson, Total) => {
-//   let mainTotal = Total
-//   const operation = [(a, b) => a + b, (a, b) => a - b]
-
-//   const newJson = oldJson.map((elem) => {
-//     mainTotal = operation[elem.concept](mainTotal, elem.amount)
-//     return { ...elem, saldoPosterior: mainTotal }
-//   })
-
-//   return newJson
-// }
-
-// export const orderDateJson = (objects) => {
-//   const newDateJson = objects.map((elem) => {
-//     const dateNew = new Date(elem.date)
-//     return { ...elem, date: dateNew }
-//   })
-//   function compareByDate(a, b) {
-//     return b.date - a.date
-//   }
-//   const orderedJson = newDateJson.sort(compareByDate)
-//   return orderedJson
-// }
