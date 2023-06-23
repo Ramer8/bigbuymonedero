@@ -20,7 +20,7 @@ const Formulario = ({
         setDataState(newJson) //json ordenado con saldos ant/post
         setDataToShow(newJson)
       } catch (error) {
-        console.log(error.message) // se podria agregar msj de error en dom
+        console.log(error.message)
         setPage(1)
       }
     }
