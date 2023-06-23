@@ -1,5 +1,6 @@
 import { useState } from "react"
-// Este componente lo hice para practicar borrar un elemento de la lista json. Solo indentifica una entrada por el id y lo muestra
+// Este componente lo hice para practicar borrar un elemento de la lista json. Solo indentifica una entrada por el id y lo muestra.
+//Luego iba a sumarle funcion para modificar el json de la base de datos.
 const DeleteId = ({ setDataToShow, dataToShow, dataState }) => {
   //Cuando llamas delete id pasar las props de arriba
 
