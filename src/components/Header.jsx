@@ -17,11 +17,6 @@ const Header = ({ dataState, setDataState }) => {
     setConcept(0)
   }
   let saldo = ""
-  // Sorting the array of objects by recent date to get the latest balance
-  // I will should set balance in state to have independient result of the filters
-  //color of button ingresar fondos #FFCE33
-  //color of button retirar fondos  #0090FF;
-
   const orderedDate = () => {
     function compareByRecentDate(a, b) {
       return b.date - a.date
@@ -97,7 +92,6 @@ const Header = ({ dataState, setDataState }) => {
           </Typography>
           <Button
             sx={{
-              fontFamily: "Roboto",
               textTransform: "none",
               mx: 1,
               my: 1,

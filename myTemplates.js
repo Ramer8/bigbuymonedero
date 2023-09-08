@@ -154,3 +154,52 @@ export const formatDate = (date) => {
   }
   return newDate.toLocaleDateString("es-ES", options)
 }
+
+if (filteredObjects.length == "") {
+  switch (filterValue) {
+    case "in":
+      console.log("filter by concept in")
+      setDataToShow(dataState.filter((e) => e.concept === 0))
+      break
+    case "out":
+      console.log("filter by concept out")
+      setDataToShow(dataState.filter((e) => e.concept === 1))
+      break
+    default:
+      console.log(" filter by ammount.")
+      setDataToShow(filteredObjects)
+  }
+}
+
+if (filteredObjects.length == "") {
+  // filtro por concepto 'in' dentro de la barra de busqueda
+} else if (filterValue === "in") {
+  const newState = filteredObjects.filter((e) => e.concept === 0)
+  setDataToShow(newState)
+
+  // filtro por concepto "out" dentro de la barra de busqueda
+} else if (filterValue === "out") {
+  const newState = filteredObjects.filter((e) => e.concept === 1)
+  setDataToShow(newState)
+  // filtra solo por cantidad
+} else if (filterValue === "") {
+  setDataToShow(filteredObjects)
+}
+
+useEffect(() => {
+  if (filterValue === "in") {
+    const newState = dataState.filter((e) => e.concept === 0)
+    setDataToShow(newState)
+    setToggleDate(false)
+  } else if (filterValue === "out") {
+    const newState = dataState.filter((e) => e.concept === 1)
+    setDataToShow(newState)
+    setToggleDate(false)
+  } else if (filterValue === "date") {
+    setToggleDate(true)
+    setDataToShow(dataState)
+  } else {
+    setDataToShow(dataState)
+    setToggleDate(false)
+  }
+}, [filterValue, dataState])

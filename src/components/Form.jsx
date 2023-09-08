@@ -1,14 +1,12 @@
 import { useEffect } from "react"
 import axios from "axios"
-import { Stack, Pagination, colors } from "@mui/material"
+import { Stack, Pagination } from "@mui/material"
 import { orderDateJson, formatMoney } from "../helpers/Operation"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
-import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
 
 const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
   const valor = 100000
@@ -19,7 +17,7 @@ const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
         const url = `http://localhost:3000/movements`
         const { data } = await axios(url)
         const newJson = orderDateJson(data, valor)
-        setDataState(newJson) //json ordenado con saldos ant/post
+        setDataState(newJson)
         setDataToShow(newJson)
       } catch (error) {
         console.log(error.message)

@@ -20,9 +20,6 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
     filter()
   }, [startDate, endDate])
 
-  // Con esta forma de busqueda funciona con formato fecha 2022-09-16 18:37:50
-  // Agregar 23:59 a la fecha x q sino toma 00hs y no abarca el dia
-
   let resultProductData = ""
   const filter = () => {
     resultProductData = dataState.filter(

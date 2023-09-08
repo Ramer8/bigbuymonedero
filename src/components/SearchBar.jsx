@@ -20,19 +20,15 @@ const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
     setFilteredObjects(filtered)
     // Check if data exist and check anothers filters
 
-    if (filteredObjects.length == "") {
-      // filtro por concepto 'in' dentro de la barra de busqueda
-    } else if (filterValue === "in") {
-      const newState = filteredObjects.filter((e) => e.concept === 0)
-      setDataToShow(newState)
-
-      // filtro por concepto "out" dentro de la barra de busqueda
-    } else if (filterValue === "out") {
-      const newState = filteredObjects.filter((e) => e.concept === 1)
-      setDataToShow(newState)
-      // filtra solo por cantidad
-    } else if (filterValue === "") {
-      setDataToShow(filteredObjects)
+    switch (filterValue) {
+      case "in":
+        setDataToShow(filteredObjects.filter((e) => e.concept === 0))
+        break
+      case "out":
+        setDataToShow(filteredObjects.filter((e) => e.concept === 1))
+        break
+      default:
+        setDataToShow(filteredObjects)
     }
   }
 

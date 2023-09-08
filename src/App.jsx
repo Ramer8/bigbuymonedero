@@ -11,8 +11,6 @@ import Filter from "./components/Filter"
 import SearchBar from "./components/SearchBar"
 import FilterByDate from "./components/FilterByDate"
 import Form from "./components/Form"
-// import StickyHeadTable from "./components/Table"
-import BasicTable from "./components/Table1"
 
 function App() {
   const [dataState, setDataState] = useState([])
@@ -121,7 +119,6 @@ function App() {
             </>
           )}
         </Grid>
-        {/* <StickyHeadTable /> */}
         <Typography component="h2" variant="h6">
           <Form
             filterValue={filterValue}
@@ -136,7 +133,6 @@ function App() {
           />
         </Typography>
       </Container>
-      <BasicTable></BasicTable>
     </ThemeProvider>
   )
 }
