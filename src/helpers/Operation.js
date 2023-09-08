@@ -3,7 +3,6 @@ export const orderDateJson = (objects, Total) => {
     ...elem,
     date: new Date(elem.date),
   }))
-  // los convierto a fecha formato new Date para ordenarlos
 
   const orderedJson = newDateJson.sort((a, b) => a.date - b.date)
   let mainTotal = Total
@@ -26,7 +25,6 @@ export const orderDateJson = (objects, Total) => {
   return newDateJson3
 }
 
-// Funcion para formatear numero a euro
 export const formatMoney = (money) => {
   const euro = money.toLocaleString("es-ES", {
     style: "currency",

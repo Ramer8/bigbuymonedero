@@ -13,12 +13,10 @@ const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
     const { value } = event.target
     setPage(1)
     setUserInput(value)
-    // Filter by amount
     const filtered = dataState.filter((obj) =>
       obj.amount.toString().includes(value)
     )
     setFilteredObjects(filtered)
-    // Check if data exist and check anothers filters
 
     switch (filterValue) {
       case "in":

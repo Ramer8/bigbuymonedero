@@ -21,18 +21,13 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    // Create a copy of the existing objects array
     const updatedObjects = [...dataState]
-    // Generate a new ID y and Date
-    // Create a new object with the provided values
     const newObj = {
       ...newObject,
       concept: concept,
       id: dataState.length + 1,
       date: new Date(Date.now()),
     }
-    //Errors
-    // Check amount if its positive
     if (newObj.amount === "" || newObj.amount <= 0) {
       setError({ error: true, text: "Ingrese valor mayor a 0" })
       setTimeout(() => {
@@ -41,7 +36,6 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
       return
     }
 
-    //Check money balance
     if (newObj.concept && dataState[0].saldoPosterior < newObj.amount) {
       setError({
         error: true,
@@ -52,20 +46,13 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
       }, 4000)
       return
     }
-    // Add the new object to the array
     updatedObjects.push(newObj)
-    //Save and order the new state with new array of objects
     setDataState(orderDateJson(updatedObjects, 100000))
-    // Update the state with the new array of objects
-
-    // Opcional guarda objeto nuevo en json con servidor fake.
     function createPost() {
       const baseURL = `http://localhost:3000/movements`
       axios.post(baseURL, newObj).then((response) => {})
     }
     createPost()
-
-    // Reset the form
     setNewObject({ id: "", amount: "", concept: "", date: "" })
 
     setTimeout(() => {

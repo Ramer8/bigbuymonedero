@@ -32,7 +32,6 @@ const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
   const handleChangePage = (e, valor) => {
     setPage(valor)
   }
-  //tres renglones de arriba son de paginacion
 
   return (
     <>
