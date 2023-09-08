@@ -1,4 +1,9 @@
 import React, { useState } from "react"
+import { Grid } from "@mui/material"
+import InputBase from "@mui/material/InputBase"
+import SearchIcon from "@mui/icons-material/Search"
+import IconButton from "@mui/material/IconButton"
+import HighlightOffIcon from "@mui/icons-material/HighlightOff"
 
 const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
   const [userInput, setUserInput] = useState("")
@@ -16,37 +21,66 @@ const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
     // Check if data exist and check anothers filters
 
     if (filteredObjects.length == "") {
-      // filtro por concepto 'ingreso' dentro de la barra de busqueda
-    } else if (filterValue === "Ingreso") {
+      // filtro por concepto 'in' dentro de la barra de busqueda
+    } else if (filterValue === "in") {
       const newState = filteredObjects.filter((e) => e.concept === 0)
       setDataToShow(newState)
 
-      // filtro por concepto egreso dentro de la barra de busqueda
-    } else if (filterValue === "Retirada") {
+      // filtro por concepto "out" dentro de la barra de busqueda
+    } else if (filterValue === "out") {
       const newState = filteredObjects.filter((e) => e.concept === 1)
       setDataToShow(newState)
-
       // filtra solo por cantidad
     } else if (filterValue === "") {
       setDataToShow(filteredObjects)
     }
   }
+
   return (
     <div>
-      <input
-        type="number"
-        value={userInput}
-        onChange={handleInputChange}
-        placeholder="Buscar por Importe"
-      />
-      <button
-        type="submit"
-        onClick={() => {
-          setDataToShow(dataState), setUserInput("")
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        item
+        xs={"auto"}
+        sx={{
+          fontWeight: "bold",
+          borderRadius: 2,
+          bgcolor: (theme) =>
+            theme.palette.mode === "dark" ? "text.disabled" : "#fff",
+          color: (theme) =>
+            theme.palette.mode === "dark" ? "grey.300" : "grey.800",
+          boxShadow: 3,
         }}
       >
-        REINICIAR
-      </button>
+        <IconButton type="button" sx={{ p: 1 }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search…"
+          inputProps={{ "aria-label": "search" }}
+          value={userInput}
+          onChange={handleInputChange}
+          type="number"
+        />
+        <IconButton
+          aria-label="HighlightOffIcon"
+          size="small"
+          type="submit"
+          onClick={() => {
+            setDataToShow(dataState), setUserInput("")
+          }}
+          sx={{
+            mx: 1,
+            my: 1,
+          }}
+        >
+          <HighlightOffIcon fontSize="small" />
+        </IconButton>
+      </Grid>
     </div>
   )
 }

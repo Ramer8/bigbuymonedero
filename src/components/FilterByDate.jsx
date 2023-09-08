@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react"
-import { Stack, Alert } from "@mui/material"
+import { Stack, Alert, TextField } from "@mui/material"
+import IconButton from "@mui/material/IconButton"
+import DeleteIcon from "@mui/icons-material/Delete"
 
-const FilterByDate = ({ dataState, setDataToShow, dataToShow }) => {
+const FilterByDate = ({ dataState, setDataToShow }) => {
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [error, setError] = useState("")
 
-  const handleInputChange = (event) => {
+  const handleInputChangeStartDate = (event) => {
     const { value } = event.target
     setStartDate(value)
   }
-  const handleInputChange2 = (event) => {
+  const handleInputChangeEndDate = (event) => {
     const { value } = event.target
     setEndDate(value)
   }
@@ -40,30 +42,42 @@ const FilterByDate = ({ dataState, setDataToShow, dataToShow }) => {
 
   return (
     <div>
-      <input
+      <TextField
+        label="Start Date"
+        variant="outlined"
         type="date"
         id="startDate"
+        InputLabelProps={{ shrink: true }}
         value={startDate}
-        onChange={handleInputChange}
+        onChange={handleInputChangeStartDate}
+        sx={{ marginX: "20px" }}
       />
-      <label htmlFor="startDate">Start Date</label>
-      <input
+
+      <TextField
+        label="End Date"
+        variant="outlined"
         type="date"
         id="endDate"
+        InputLabelProps={{ shrink: true }}
         value={endDate}
-        onChange={handleInputChange2}
+        onChange={handleInputChangeEndDate}
       />
-      <label htmlFor="endDate">End Date</label>
-      <button
+      <IconButton
+        aria-label="DeleteIcon"
+        size="small"
+        color="primary"
         type="submit"
         onClick={() => {
           setStartDate(""), setEndDate(""), setDataToShow(dataState)
         }}
+        sx={{
+          mx: 1,
+          my: 1,
+        }}
       >
-        BORRAR FECHAS
-      </button>
+        <DeleteIcon fontSize="small" />
+      </IconButton>
       {error ? (
-        //
         <Stack sx={{ width: "100%" }} spacing={2}>
           <Alert severity="error">{error}</Alert>
         </Stack>

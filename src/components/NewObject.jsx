@@ -1,13 +1,9 @@
 import React, { useState } from "react"
 import { orderDateJson } from "../helpers/Operation"
-import { Stack, Alert } from "@mui/material"
+import NestedModal from "./Modal"
 import axios from "axios"
-const NewObject = ({
-  setDataState,
-  dataState,
-  concept,
-  setToggleMoneyInput,
-}) => {
+
+const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
   const [error, setError] = useState({ error: false, text: "" })
   const [newObject, setNewObject] = useState({
     id: "",
@@ -33,7 +29,6 @@ const NewObject = ({
       ...newObject,
       concept: concept,
       id: dataState.length + 1,
-      // id: Math.ceil(new Date() / 100000000),
       date: new Date(Date.now()),
     }
     //Errors
@@ -72,31 +67,23 @@ const NewObject = ({
 
     // Reset the form
     setNewObject({ id: "", amount: "", concept: "", date: "" })
-  }
 
+    setTimeout(() => {
+      setOpen(false)
+    }, "700")
+    setTimeout(0)
+  }
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="number"
-          name="amount"
-          placeholder={"ingrese valor"}
-          value={newObject.amount}
-          onChange={handleInputChange}
-        />
-        <button type="submit">OK</button>
-        <button type="submit" onClick={() => setToggleMoneyInput(false)}>
-          X
-        </button>
-      </form>
-      {error.error ? (
-        //
-        <Stack sx={{ width: "100%" }} spacing={2}>
-          <Alert severity="error">{error.text}</Alert>
-        </Stack>
-      ) : (
-        ""
-      )}
+      <NestedModal
+        handleInputChange={handleInputChange}
+        handleSubmit={handleSubmit}
+        error={error}
+        newObject={newObject}
+        concept={concept}
+        open={open}
+        setOpen={setOpen}
+      ></NestedModal>
     </div>
   )
 }

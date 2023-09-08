@@ -1,15 +1,18 @@
+import CssBaseline from "@mui/material/CssBaseline"
 import { useState, useEffect } from "react"
-import { Container, Typography } from "@mui/material"
-import Header from "./components/header"
-import Formulario from "./components/Formulario"
+import { Container, Grid, Typography } from "@mui/material"
 
 import { useMemo } from "react"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import CssBaseline from "@mui/material/CssBaseline"
+
+import Header from "./components/header"
 import Filter from "./components/Filter"
 import SearchBar from "./components/SearchBar"
 import FilterByDate from "./components/FilterByDate"
+import Form from "./components/Form"
+// import StickyHeadTable from "./components/Table"
+import BasicTable from "./components/Table1"
 
 function App() {
   const [dataState, setDataState] = useState([])
@@ -21,20 +24,20 @@ function App() {
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    if (filterValue === "Ingreso") {
-      const newState = dataState.filter((e) => e.concept === 0)
-      setDataToShow(newState)
-      setToggleDate(false)
-    } else if (filterValue === "Retirada") {
-      const newState = dataState.filter((e) => e.concept === 1)
-      setDataToShow(newState)
-      setToggleDate(false)
-    } else if (filterValue === "Fecha") {
-      setToggleDate(true)
-      setDataToShow(dataState)
-    } else {
-      setDataToShow(dataState)
-      setToggleDate(false)
+    setToggleDate(false)
+    switch (filterValue) {
+      case "in":
+        setDataToShow(dataState.filter((e) => e.concept === 0))
+        break
+      case "out":
+        setDataToShow(dataState.filter((e) => e.concept === 1))
+        break
+      case "date":
+        setToggleDate(true)
+        setDataToShow(dataState)
+        break
+      default:
+        setDataToShow(dataState)
     }
   }, [filterValue, dataState])
 
@@ -68,39 +71,59 @@ function App() {
       }),
     [prefersDarkMode]
   )
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container>
+      <Container
+        sx={{
+          width: "auto",
+          borderRadius: 2,
+          boxShadow: 3,
+          margin: "auto",
+          paddingX: "25px",
+          marginY: "25px",
+          bgcolor: (theme) =>
+            theme.palette.mode === "dark" ? "grey.900" : "#fff",
+          color: (theme) =>
+            theme.palette.mode === "dark" ? "grey.400" : "grey.800",
+        }}
+      >
         <Header
           dataState={dataState}
-          dataToShow={dataToShow}
-          setDataToShow={setDataToShow}
           setDataState={setDataState}
+          dataToShow={dataToShow}
         />
-        <SearchBar
-          filterValue={filterValue}
-          setDataToShow={setDataToShow}
-          dataState={dataState}
-          setPage={setPage}
-        />
-        <span> - </span>
-        <Filter
-          handleChangeFilter={handleChangeFilter}
-          filterValue={filterValue}
-        />
-        <span> - </span>
-        {toggleDate && (
-          <>
-            <FilterByDate
-              dataState={dataState}
-              setDataToShow={setDataToShow}
-              dataToShow={dataToShow}
-            />
-          </>
-        )}
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <SearchBar
+            filterValue={filterValue}
+            setDataToShow={setDataToShow}
+            dataState={dataState}
+            setPage={setPage}
+          />
+          <Filter
+            handleChangeFilter={handleChangeFilter}
+            filterValue={filterValue}
+          />
+          {toggleDate && (
+            <>
+              <FilterByDate
+                dataState={dataState}
+                setDataToShow={setDataToShow}
+                dataToShow={dataToShow}
+              />
+            </>
+          )}
+        </Grid>
+        {/* <StickyHeadTable /> */}
         <Typography component="h2" variant="h6">
-          <Formulario
+          <Form
             filterValue={filterValue}
             page={page}
             setPage={setPage}
@@ -113,6 +136,7 @@ function App() {
           />
         </Typography>
       </Container>
+      <BasicTable></BasicTable>
     </ThemeProvider>
   )
 }

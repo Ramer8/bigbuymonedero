@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 myNotes.js
 .env
+Correcciones.js
+Table.js
+Table1.js
+myTemplates.js
+Extra.jsx
+Pagination.jsx
+DeleteId.jsx

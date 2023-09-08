@@ -1,22 +1,27 @@
 import { Button, Typography, Grid, Box } from "@mui/material"
 import { formatMoney } from "../helpers/Operation"
 import NewObject from "./NewObject"
+import SyncAltIcon from "@mui/icons-material/SyncAlt"
 import { useState } from "react"
-const Header = ({ dataState, setDataState, dataToShow, setDataToShow }) => {
-  const [toggleMoneyInput, setToggleMoneyInput] = useState(false)
 
+const Header = ({ dataState, setDataState }) => {
+  const [open, setOpen] = useState(false)
   const [concept, setConcept] = useState()
+
   const handleTakeMoneyOut = (e) => {
-    setToggleMoneyInput(true)
+    setOpen(true)
     setConcept(1)
   }
   const handleDepositMoney = (e) => {
-    setToggleMoneyInput(true)
+    setOpen(true)
     setConcept(0)
   }
   let saldo = ""
   // Sorting the array of objects by recent date to get the latest balance
   // I will should set balance in state to have independient result of the filters
+  //color of button ingresar fondos #FFCE33
+  //color of button retirar fondos  #0090FF;
+
   const orderedDate = () => {
     function compareByRecentDate(a, b) {
       return b.date - a.date
@@ -28,54 +33,109 @@ const Header = ({ dataState, setDataState, dataToShow, setDataToShow }) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item></Grid>
-          <Grid item xs={4}>
-            <Typography component="h1" variant="h6">
-              Movimientos to zip
-            </Typography>
-            <Typography
-              sx={{ mx: 7, fontWeight: "bold" }}
-              component="h1"
-              variant="h6"
-              align="left"
-              color="primary"
-            >
-              {saldo && saldo !== 0
-                ? `Saldo Actual, ${formatMoney(saldo)}`
-                : "No hay saldo disponible"}
-            </Typography>
-          </Grid>
-          <Grid item xs={5} md={4} sx={{ mx: 4 }}>
-            <Button
-              sx={{ mt: 2, mx: 2 }}
-              variant="contained"
-              color="primary"
-              onClick={handleTakeMoneyOut}
-            >
-              Retirar fondos
-            </Button>
-
-            <Button
-              sx={{ mt: 2, mx: 2 }}
-              variant="contained"
-              color="warning"
-              onClick={handleDepositMoney}
-            >
-              Ingresar fondos
-            </Button>
-          </Grid>
+      <Grid
+        spacing={0}
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Grid item xs={2}>
+          <Typography
+            component="h1"
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+            }}
+          >
+            <SyncAltIcon
+              sx={{
+                margin: "8px",
+                marginY: "-4px",
+                borderRadius: 2,
+              }}
+            />{" "}
+            Movimientos
+          </Typography>
         </Grid>
-      </Box>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          item
+          md={10}
+        >
+          <Typography
+            sx={{ mx: 1 }}
+            component="h1"
+            variant="h6"
+            align="center"
+            color="primary"
+          >
+            {saldo && saldo !== 0 ? (
+              <Grid container sx={{ mx: 2 }}>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  sx={{ mx: 1, fontWeight: 700 }}
+                >
+                  Saldo actual:
+                </Typography>
+
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  sx={{ fontWeight: 100 }}
+                >
+                  {formatMoney(saldo)}
+                </Typography>
+              </Grid>
+            ) : (
+              "No hay saldo disponible"
+            )}
+          </Typography>
+          <Button
+            sx={{
+              fontFamily: "Roboto",
+              textTransform: "none",
+              mx: 1,
+              my: 1,
+              backgroundColor: "#0090FF",
+              color: "white",
+            }}
+            variant="contained"
+            color="primary"
+            onClick={handleTakeMoneyOut}
+          >
+            Retirar fondos
+          </Button>
+          <Button
+            sx={{
+              mx: 1,
+              my: 1,
+              textTransform: "none",
+              backgroundColor: "#FFCE33",
+              color: "#464E5F",
+            }}
+            xs={1}
+            variant="contained"
+            color="warning"
+            onClick={handleDepositMoney}
+          >
+            Ingresar fondos
+          </Button>
+        </Grid>
+      </Grid>
 
       <Box sx={{ mt: 2 }} variant="contained" color="warning">
-        {toggleMoneyInput && (
+        {open && (
           <NewObject
-            setToggleMoneyInput={setToggleMoneyInput}
             concept={concept}
             dataState={dataState}
             setDataState={setDataState}
+            open={open}
+            setOpen={setOpen}
           />
         )}
       </Box>
