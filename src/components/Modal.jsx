@@ -44,7 +44,6 @@ export default function NestedModal({
         <Box
           sx={{
             ...style,
-            width: 400,
             textAlign: "center",
             width: {
               xs: 170,
