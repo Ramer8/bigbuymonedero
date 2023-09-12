@@ -3,7 +3,14 @@ import { orderDateJson } from "../helpers/Operation"
 import NestedModal from "./Modal"
 import axios from "axios"
 
-const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
+const NewTransaction = ({
+  setDataState,
+  dataState,
+  concept,
+  open,
+  setOpen,
+  balance,
+}) => {
   const [error, setError] = useState({ error: false, text: "" })
   const [newObject, setNewObject] = useState({
     id: "",
@@ -24,9 +31,9 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
     const updatedObjects = [...dataState]
     const newObj = {
       ...newObject,
-      concept: concept,
+      concept,
       id: dataState.length + 1,
-      date: new Date(Date.now()),
+      date: new Date(),
     }
     if (newObj.amount === "" || newObj.amount <= 0) {
       setError({ error: true, text: "Ingrese valor mayor a 0" })
@@ -36,7 +43,7 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
       return
     }
 
-    if (newObj.concept && dataState[0].saldoPosterior < newObj.amount) {
+    if (newObj.concept && dataState[0].subsequentBalance < newObj.amount) {
       setError({
         error: true,
         text: "Ingrese un valor menor al saldo actual o verifique su saldo disponible",
@@ -47,7 +54,7 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
       return
     }
     updatedObjects.push(newObj)
-    setDataState(orderDateJson(updatedObjects, 100000))
+    setDataState(orderDateJson(updatedObjects, balance))
     function createPost() {
       const baseURL = `http://localhost:3000/movements`
       axios.post(baseURL, newObj).then((response) => {})
@@ -57,8 +64,7 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
 
     setTimeout(() => {
       setOpen(false)
-    }, "700")
-    setTimeout(0)
+    }, 700)
   }
   return (
     <div>
@@ -75,4 +81,4 @@ const NewObject = ({ setDataState, dataState, concept, open, setOpen }) => {
   )
 }
 
-export default NewObject
+export default NewTransaction

@@ -5,7 +5,13 @@ import SearchIcon from "@mui/icons-material/Search"
 import IconButton from "@mui/material/IconButton"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff"
 
-const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
+const SearchBar = ({
+  setDataToShow,
+  dataState,
+  setPage,
+  filterValue,
+  switchFn,
+}) => {
   const [userInput, setUserInput] = useState("")
   const [filteredObjects, setFilteredObjects] = useState([])
 
@@ -18,16 +24,23 @@ const SearchBar = ({ setDataToShow, dataState, setPage, filterValue }) => {
     )
     setFilteredObjects(filtered)
 
-    switch (filterValue) {
-      case "in":
-        setDataToShow(filteredObjects.filter((e) => e.concept === 0))
-        break
-      case "out":
-        setDataToShow(filteredObjects.filter((e) => e.concept === 1))
-        break
-      default:
-        setDataToShow(filteredObjects)
+    const infilter = () =>
+      setDataToShow(filteredObjects.filter((e) => e.concept === 0))
+
+    const outfilter = () =>
+      setDataToShow(filteredObjects.filter((e) => e.concept === 1))
+
+    const byDefalut = () => setDataToShow(filteredObjects)
+
+    const logFilter = {
+      in: infilter,
+      out: outfilter,
+      default: byDefalut,
     }
+
+    const filterSwitch = switchFn(logFilter, "default")
+
+    filterSwitch(filterValue)
   }
 
   return (

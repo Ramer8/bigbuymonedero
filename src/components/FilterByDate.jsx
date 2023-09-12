@@ -8,6 +8,10 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
   const [endDate, setEndDate] = useState("")
   const [error, setError] = useState("")
 
+  useEffect(() => {
+    filter()
+  }, [startDate, endDate])
+
   const handleInputChangeStartDate = (event) => {
     const { value } = event.target
     setStartDate(value)
@@ -16,9 +20,11 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
     const { value } = event.target
     setEndDate(value)
   }
-  useEffect(() => {
-    filter()
-  }, [startDate, endDate])
+  const settingOnClick = () => {
+    setStartDate("")
+    setEndDate("")
+    setDataToShow(dataState)
+  }
 
   let resultProductData = ""
   const filter = () => {
@@ -49,7 +55,6 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
         onChange={handleInputChangeStartDate}
         sx={{ marginX: "20px" }}
       />
-
       <TextField
         label="End Date"
         variant="outlined"
@@ -65,7 +70,7 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
         color="primary"
         type="submit"
         onClick={() => {
-          setStartDate(""), setEndDate(""), setDataToShow(dataState)
+          settingOnClick()
         }}
         sx={{
           mx: 1,
@@ -74,12 +79,10 @@ const FilterByDate = ({ dataState, setDataToShow }) => {
       >
         <DeleteIcon fontSize="small" />
       </IconButton>
-      {error ? (
+      {error && (
         <Stack sx={{ width: "100%" }} spacing={2}>
           <Alert severity="error">{error}</Alert>
         </Stack>
-      ) : (
-        ""
       )}
     </div>
   )

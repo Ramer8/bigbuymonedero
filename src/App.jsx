@@ -13,6 +13,7 @@ import FilterByDate from "./components/FilterByDate"
 import Form from "./components/Form"
 
 function App() {
+  const [balance, setBalance] = useState("")
   const [dataState, setDataState] = useState([])
   const [dataToShow, setDataToShow] = useState([])
   const [dataShow, setDataShow] = useState([])
@@ -23,20 +24,23 @@ function App() {
 
   useEffect(() => {
     setToggleDate(false)
-    switch (filterValue) {
-      case "in":
-        setDataToShow(dataState.filter((e) => e.concept === 0))
-        break
-      case "out":
-        setDataToShow(dataState.filter((e) => e.concept === 1))
-        break
-      case "date":
-        setToggleDate(true)
-        setDataToShow(dataState)
-        break
-      default:
-        setDataToShow(dataState)
+    const infilter = () =>
+      setDataToShow(dataState.filter((e) => e.concept === 0))
+    const outfilter = () =>
+      setDataToShow(dataState.filter((e) => e.concept === 1))
+    const datefilter = () => {
+      setToggleDate(true), setDataToShow(dataState)
     }
+    const byDefalut = () => setDataToShow(dataState)
+    const logFilter = {
+      in: infilter,
+      out: outfilter,
+      date: datefilter,
+      default: byDefalut,
+    }
+    const filterSwitch = switchFn(logFilter, "default")
+
+    filterSwitch(filterValue)
   }, [filterValue, dataState])
 
   useEffect(() => {
@@ -54,6 +58,11 @@ function App() {
   useEffect(() => {
     setPage(1)
   }, [filterValue])
+
+  const switchFn =
+    (lookupObject, defaultCase = "_default") =>
+    (expression) =>
+      (lookupObject[expression] || lookupObject[defaultCase])()
 
   const handleChangeFilter = (e) => {
     setFilterValue(e.target.value)
@@ -91,6 +100,7 @@ function App() {
           dataState={dataState}
           setDataState={setDataState}
           dataToShow={dataToShow}
+          balance={balance}
         />
 
         <Grid
@@ -100,6 +110,7 @@ function App() {
           alignItems="flex-start"
         >
           <SearchBar
+            switchFn={switchFn}
             filterValue={filterValue}
             setDataToShow={setDataToShow}
             dataState={dataState}
@@ -121,6 +132,7 @@ function App() {
         </Grid>
         <Typography component="h2" variant="h6">
           <Form
+            setBalance={setBalance}
             filterValue={filterValue}
             page={page}
             setPage={setPage}

@@ -1,10 +1,10 @@
 import { Button, Typography, Grid, Box } from "@mui/material"
 import { formatMoney } from "../helpers/Operation"
-import NewObject from "./NewObject"
 import SyncAltIcon from "@mui/icons-material/SyncAlt"
 import { useState } from "react"
+import NewTransaction from "./NewTransaction"
 
-const Header = ({ dataState, setDataState }) => {
+const Header = ({ dataState, setDataState, balance }) => {
   const [open, setOpen] = useState(false)
   const [concept, setConcept] = useState()
 
@@ -16,13 +16,14 @@ const Header = ({ dataState, setDataState }) => {
     setOpen(true)
     setConcept(0)
   }
-  let saldo = ""
+  let newBalance = ""
+
   const orderedDate = () => {
     function compareByRecentDate(a, b) {
       return b.date - a.date
     }
     dataState?.sort(compareByRecentDate)
-    saldo = dataState[0]?.saldoPosterior
+    newBalance = dataState[0]?.subsequentBalance
   }
   orderedDate()
 
@@ -68,7 +69,7 @@ const Header = ({ dataState, setDataState }) => {
             align="center"
             color="primary"
           >
-            {saldo && saldo !== 0 ? (
+            {newBalance && newBalance !== 0 ? (
               <Grid container sx={{ mx: 2 }}>
                 <Typography
                   component="h1"
@@ -83,7 +84,7 @@ const Header = ({ dataState, setDataState }) => {
                   variant="h6"
                   sx={{ fontWeight: 100 }}
                 >
-                  {formatMoney(saldo)}
+                  {formatMoney(newBalance)}
                 </Typography>
               </Grid>
             ) : (
@@ -124,12 +125,13 @@ const Header = ({ dataState, setDataState }) => {
 
       <Box sx={{ mt: 2 }} variant="contained" color="warning">
         {open && (
-          <NewObject
+          <NewTransaction
             concept={concept}
             dataState={dataState}
             setDataState={setDataState}
             open={open}
             setOpen={setOpen}
+            balance={balance}
           />
         )}
       </Box>

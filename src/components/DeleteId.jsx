@@ -21,7 +21,7 @@ const DeleteId = ({ setDataToShow, dataToShow, dataState }) => {
     // setDataToShow(IdToDelete)
     //.. continuar
   }
-
+  /Users/ramirop/Documents/js/bigbuymonedero/src/components/DeleteId.jsx
   return (
     <>
       <form onSubmit={handleSubmit}>

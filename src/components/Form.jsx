@@ -8,15 +8,24 @@ import TableCell from "@mui/material/TableCell"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 
-const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
-  const valor = 100000
-
+const Form = ({
+  setDataState,
+  dataToShow,
+  setDataToShow,
+  page,
+  setPage,
+  setBalance,
+}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
         const url = `http://localhost:3000/movements`
+        const url2 = `http://localhost:3000/balance`
         const { data } = await axios(url)
-        const newJson = orderDateJson(data, valor)
+        const dataBalance = await axios(url2)
+        const newBalance = dataBalance.data[0].balance
+        setBalance(newBalance)
+        const newJson = orderDateJson(data, newBalance)
         setDataState(newJson)
         setDataToShow(newJson)
       } catch (error) {
@@ -29,8 +38,8 @@ const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
   const totalobjects = dataToShow.length
   const totalpages = Math.ceil(totalobjects / 5)
 
-  const handleChangePage = (e, valor) => {
-    setPage(valor)
+  const handleChangePage = (e, value) => {
+    setPage(value)
   }
 
   return (
@@ -65,10 +74,10 @@ const Form = ({ setDataState, dataToShow, setDataToShow, page, setPage }) => {
               </TableCell>
               <TableCell align="right">{formatMoney(row.amount)}</TableCell>
               <TableCell align="right">
-                {formatMoney(row.saldoAnterior)}
+                {formatMoney(row.previousBalance)}
               </TableCell>
               <TableCell align="right">
-                {formatMoney(row.saldoPosterior)}
+                {formatMoney(row.subsequentBalance)}
               </TableCell>
             </TableRow>
           ))}
