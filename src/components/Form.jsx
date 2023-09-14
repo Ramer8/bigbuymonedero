@@ -19,10 +19,10 @@ const Form = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `http://localhost:3000/movements`
-        const url2 = `http://localhost:3000/balance`
-        const { data } = await axios(url)
-        const dataBalance = await axios(url2)
+        const urlDataBase = `http://localhost:3000/movements`
+        const urlBalance = `http://localhost:3000/balance`
+        const { data } = await axios(urlDataBase)
+        const dataBalance = await axios(urlBalance)
         const newBalance = dataBalance.data[0].balance
         setBalance(newBalance)
         const newJson = orderDateJson(data, newBalance)

@@ -1,27 +1,30 @@
-export const orderDateJson = (objects, Total) => {
+export const orderDateJson = (objects, total) => {
   const newDateJson = objects.map((elem) => ({
     ...elem,
     date: new Date(elem.date),
   }))
 
-  const orderedJson = newDateJson.sort((a, b) => a.date - b.date)
-  let mainTotal = Total
+  const orderedJsonByDate = newDateJson.sort(
+    (dateA, dateB) => dateA.date - dateB.date
+  )
   let previousBalance = ""
-  const operation = [(a, b) => a + b, (a, b) => a - b]
+  const operation = [
+    (dateA, dateB) => dateA + dateB,
+    (dateA, dateB) => dateA - dateB,
+  ]
 
-  const newJson = orderedJson.map((elem) => {
-    mainTotal = operation[elem.concept](mainTotal, elem.amount)
-
-    elem.concept && (previousBalance = mainTotal + elem.amount)
-    !elem.concept && (previousBalance = mainTotal - elem.amount)
+  const newJson = orderedJsonByDate.map((elem) => {
+    total = operation[elem.concept](total, elem.amount)
+    elem.concept && (previousBalance = total + elem.amount)
+    !elem.concept && (previousBalance = total - elem.amount)
 
     return {
       ...elem,
-      subsequentBalance: mainTotal,
+      subsequentBalance: total,
       previousBalance,
     }
   })
-  const orderedJson2 = newJson.sort((a, b) => b.date - a.date)
+  const orderedJson2 = newJson.sort((dateA, dateB) => dateB.date - dateA.date)
   const newDateJson3 = orderedJson2.map((elem) => ({
     ...elem,
     date: elem.date.toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2"),

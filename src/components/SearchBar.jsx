@@ -25,10 +25,10 @@ const SearchBar = ({
     setFilteredObjects(filtered)
 
     const infilter = () =>
-      setDataToShow(filteredObjects.filter((e) => e.concept === 0))
+      setDataToShow(filteredObjects.filter((data) => data.concept === 0))
 
     const outfilter = () =>
-      setDataToShow(filteredObjects.filter((e) => e.concept === 1))
+      setDataToShow(filteredObjects.filter((data) => data.concept === 1))
 
     const byDefalut = () => setDataToShow(filteredObjects)
 

@@ -31,9 +31,9 @@ const NewTransaction = ({
     const updatedObjects = [...dataState]
     const newObj = {
       ...newObject,
-      concept,
+      concept: concept,
       id: dataState.length + 1,
-      date: new Date(),
+      date: new Date(Date.now()),
     }
     if (newObj.amount === "" || newObj.amount <= 0) {
       setError({ error: true, text: "Ingrese valor mayor a 0" })
@@ -43,7 +43,7 @@ const NewTransaction = ({
       return
     }
 
-    if (newObj.concept && dataState[0].subsequentBalance < newObj.amount) {
+    if (newObj.concept && dataState[0].saldoPosterior < newObj.amount) {
       setError({
         error: true,
         text: "Ingrese un valor menor al saldo actual o verifique su saldo disponible",
